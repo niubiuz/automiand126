@@ -1,0 +1,100 @@
+PID = Plugin.Web.Bind("wqm.exe")
+Dim a
+a = 0
+
+For 3000000000
+Call Plugin.Web.Go("http://bbs.tttsh.com/forum.php?mod=forumdisplay&fid=44&filter=author&orderby=dateline")
+Delay 4000
+If a > 6 Then 
+Delay 300000
+   a=0
+End If
+a = CStr(a)
+Call Plugin.Web.RunJS(0,"var arr=document.getElementsByTagName('a');for(var i=0;i<arr.length;i++){arr[i].target='_self';}")
+//click2="document.getElementsByTagName('img')["+a+"].click();"
+click2="var arr=document.getElementsByTagName('a');var arr2=new Array();for(var i=0,len=arr.length;i<len;i++){if(arr[i].title=='新窗口打开'){arr2.push(arr[i]);}} arr2["+a+"].click();"
+Call Plugin.Web.RunJS(0, click2)
+Delay 4000
+//If title<>Plugin.Web.RunJS(1, "var title2=document.getElementsByTagName('h1')[1].innerText;return title2;") Then
+title = Plugin.Web.RunJS(1, "var title2=document.getElementById('thread_subject').innerText;title2=title2.substr(0,28);return title2;")
+content = Plugin.Web.RunJS(1, "var content2=document.getElementsByTagName('td')[25].innerText;return content2;")
+Url = Plugin.Web.GetURL()
+MessageBox title
+MessageBox content
+Delay 2000
+Call Plugin.Web.Go("http://portal.iuoooo.com/Home/Index")
+Hwnd0 = Plugin.Web.GetHwnd()
+Call Plugin.Bkgnd.LeftClick(Hwnd0, 94, 200)
+Delay 2000
+Call Plugin.Bkgnd.LeftClick(Hwnd0, 88, 334)
+Delay 4000
+//click4="document.getElementsByTagName('iframe')[0].contentWindow.document.getElementById('keyword').value="+"'"+title+"'"
+//Call Plugin.Web.RunJS(0, click4)
+Call Plugin.Web.RunJS(0, "document.getElementsByTagName('iframe')[0].contentWindow.document.getElementById('keyword').focus();")
+//MessageBox title
+Hwnd8 = Plugin.Window.GetKeyFocusWnd
+Plugin.Window.SendString Hwnd8,title
+Delay 2000
+//Call Plugin.Web.RunJS(0, "var arr=document.getElementsByTagName('iframe')[0].contentWindow.document.getElementsByTagName('a');for(var i=0;i<arr.length;i++){if(arr[i].innerText=='搜索'){arr[i].click();}}")
+Hwnd10 = Plugin.Web.GetHwnd()
+Call Plugin.Bkgnd.LeftClick(Hwnd10, 445, 116)
+Delay 8000
+pd=Plugin.Web.RunJS(1,"var pd=document.getElementsByTagName('iframe')[0].contentWindow.document.getElementsByTagName('tr')[2]==null;return pd;")
+//MessageBox pd
+If pd Then
+Call Plugin.Web.Go("http://portal.iuoooo.com/Home/Index")
+//MessageBox title
+Delay 5000
+
+//Call Plugin.Web.RunJS(0, "document.getElementById('menu_newsPublish_a6f95b4f-2f3-437a-9075-aac68194b359').click();")
+Hwnd = Plugin.Web.GetHwnd()
+//Delay 2000
+//MessageBox Hwnd
+Call Plugin.Bkgnd.LeftClick(Hwnd, 94, 200)
+Delay 2000
+Call Plugin.Bkgnd.LeftClick(Hwnd, 85, 259)
+Delay 6000
+Call Plugin.Bkgnd.LeftClick(Hwnd, 388, 189)
+Delay 6000
+//Hwnd = Plugin.Web.GetHwnd()
+//Hwnd = Plugin.Window.Foreground()
+//Call Plugin.Web.MoveTo (Hwnd,347,234)
+
+//Call Plugin.Web.LeftClick (Hwnd,347,234)
+//Plugin.Web.MoveTo 378,200
+MoveTo 344, 325
+KeyPress 13,1
+
+//Call Plugin.Bkgnd.LeftClick(Hwnd, 347, 234)
+//Call Plugin.Web.RunJS(0, "document.getElementsByTagName('img')[2].click();")
+usetitle = "document.getElementsByTagName('iframe')[0].contentWindow.document.getElementById('newsNameTXT').innerText=" + "'" + title + "。'"
+Call Plugin.Web.RunJS(0, usetitle)
+usezy = "document.getElementsByTagName('iframe')[0].contentWindow.document.getElementById('digestTXT').value=" + "'" + title + "。'"
+Call Plugin.Web.RunJS(0, usezy)
+//usecontent ="document.getElementsByTagName('iframe')[0].contentWindow.document.getElementById('ueditor_0').contentWindow.document.getElementsByTagName('body')[0].innerHTML=" + "'"+ content +"。请点击我到原文查看相关链接" + Url + "。'"
+//Call Plugin.Web.RunJS(0, usecontent)
+usecontent ="document.getElementsByTagName('iframe')[0].contentWindow.document.getElementById('ueditor_0').contentWindow.document.getElementsByTagName('body')[0].focus()"
+Call Plugin.Web.RunJS(0, usecontent)
+Hwnd2 =Plugin.Window.GetKeyFocusWnd 
+content2="以下所有优惠连接可到原文url查看：  "+Url+"。    "+content+"。请点击后面所给链接到原文查看相关优惠链接:    "+Url
+//Hwnd2 = Plugin.Web.GetHwnd()
+Plugin.Window.SendString Hwnd2, content2
+Delay 2000
+KeyPress 32, 1
+Plugin.Window.SendString Hwnd2, "。"
+Delay 6000
+Call Plugin.Web.RunJS(0, "document.getElementsByTagName('iframe')[0].contentWindow.document.getElementById('pushMessageTrue').click();")
+Delay 4000
+Call Plugin.Web.RunJS(0,"var arr=document.getElementsByTagName('iframe')[0].contentWindow.document.getElementsByTagName('a');for(var i=0;i<arr.length;i++){if(arr[i].innerText=='发布'){arr[i].click();break;}}")
+//Call Plugin.Web.RunJS(0, "document.getElementsByTagName('iframe')[0].contentWindow.document.getElementById('addNewsButtons').click();")
+
+//Hwnd4 = Plugin.Web.GetHwnd()
+//Call Plugin.Bkgnd.LeftClick(Hwnd4, 1060, 292)
+Delay 2000
+a=CInt(a)
+a=a+1
+Else 
+a=CInt(a)
+a=a+1
+End If
+Next
